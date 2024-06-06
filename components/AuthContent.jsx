@@ -4,7 +4,7 @@ import AuthForm from './AuthForm'
 import ButtonWhite from './ButtonWhite'
 import { useNavigation } from '@react-navigation/native'
 
-export default function AuthContent({ isLogin }) {
+export default function AuthContent({ isLogin, onAuthenticate }) {
 
     const navigation = useNavigation()
 
@@ -27,7 +27,7 @@ export default function AuthContent({ isLogin }) {
         const emailsAreEqual = email === confirmEmail
         const passwordAreEqual = password === confirmPassword
 
-        if(!emailIsValid || !passwordIsValid || (!isLogin && (!emailsAreEqual || passwordAreEqual))) {
+        if(!emailIsValid || !passwordIsValid || (!isLogin && (!emailsAreEqual || !passwordAreEqual))) {
             Alert.alert("Hatalı İşlem", "Lütfen girdiğiniz değerleri kontrol ediniz.")
             setCredentialsInvalid({
                 email: !emailIsValid,
@@ -37,6 +37,8 @@ export default function AuthContent({ isLogin }) {
             })
             return
         }
+
+        onAuthenticate({ email, password })
     }
 
     function switchScreen() {
