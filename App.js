@@ -4,6 +4,8 @@ import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import HomeScreen from "./screens/HomeScreen";
 import AuthContextProvider, { useAuthContext }  from "./context/AuthContext";
+import { Pressable, StyleSheet } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +41,7 @@ function NormalStack() {
 }
 
 function AfterAuthenticatedStack() {
+  const { logout } = useAuthContext()
   return (
     <Stack.Navigator
       screenOptions={{
@@ -56,6 +59,11 @@ function AfterAuthenticatedStack() {
         component={HomeScreen}
         options={{
           headerTitle: "Ana Sayfa",
+          headerRight: ({ tintColor }) => (
+            <Pressable style={({pressed}) => pressed && styles.pressed} onPress={logout}>
+              <Ionicons name="exit" size={24} color={tintColor} />
+            </Pressable>
+          )
         }}
       />
     </Stack.Navigator>
@@ -78,3 +86,9 @@ export default function App() {
     </AuthContextProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  pressed: {
+    opacity: 0.5
+  }
+})
