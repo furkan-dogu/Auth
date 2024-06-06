@@ -2,15 +2,18 @@ import { Alert, StyleSheet } from 'react-native'
 import { useState } from 'react'
 import AuthContent from '../components/AuthContent'
 import Loading from "../components/Loading"
-import { login } from '../util/auth'
+import { login } from '../helpers/auth'
+import { useAuthContext } from '../context/AuthContext'
 
 export default function LoginScreen() {
   const [isAuthenticating, setisAuthenticating] = useState(false)
+  const { authenticate } = useAuthContext()
 
   const handleLogin = async ({ email, password }) => {
     setisAuthenticating(true)
     try {
-      await login(email, password)
+      const token = await login(email, password)
+      authenticate(token)
     } catch (error) {
       Alert.alert("Giriş Yapılamadı!", "Lütfen bilgilerinizi kontrol ediniz.")
     }

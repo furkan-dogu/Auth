@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import AuthContextProvider from "./context/AuthContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,9 +40,11 @@ function NormalStack() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <NormalStack />
-    </NavigationContainer>
+    <AuthContextProvider>
+      <NavigationContainer>
+        <NormalStack />
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }
 
