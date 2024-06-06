@@ -1,14 +1,44 @@
-import { StyleSheet, View } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
 import React from 'react'
 import AuthForm from './AuthForm'
 import ButtonWhite from './ButtonWhite'
+import { useNavigation } from '@react-navigation/native'
 
 export default function AuthContent({ isLogin }) {
+
+    const navigation = useNavigation()
+
+    const handleSubmit = (credentails) => {
+        
+        let { confirmEmail, confirmPassword, email, password } = credentails
+
+        email = email.trim()
+        password = password.trim()
+
+        const emailIsValid = email.includes("@") && email.includes(".")
+        const passwordIsValid = password.length > 6
+        const emailsAreEqual = email === confirmEmail
+        const passwordAreEqual = password === confirmPassword
+
+        if(!emailIsValid || !passwordIsValid || (!isLogin && (!emailsAreEqual || passwordAreEqual))) {
+            Alert.alert("Hatalı İşlem", "Lütfen girdiğiniz değerleri kontrol ediniz.")
+            return
+        }
+    }
+
+    function switchScreen() {
+        if(isLogin) {
+            navigation.navigate("Signup")
+        } else {
+            navigation.navigate("Login")
+        }
+    }
+
   return (
     <View style={styles.container}>
-      <AuthForm isLogin={isLogin} />
+      <AuthForm isLogin={isLogin} onsubmit={handleSubmit} />
       <View>
-        <ButtonWhite>
+        <ButtonWhite onPress={switchScreen}>
             {isLogin ? "Yeni Kullanıcı Oluştur" : "Giriş Yap"}
         </ButtonWhite>
       </View>
