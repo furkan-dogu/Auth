@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, View } from 'react-native'
-import React from 'react'
+import { useState } from 'react'
 import AuthForm from './AuthForm'
 import ButtonWhite from './ButtonWhite'
 import { useNavigation } from '@react-navigation/native'
@@ -7,6 +7,13 @@ import { useNavigation } from '@react-navigation/native'
 export default function AuthContent({ isLogin }) {
 
     const navigation = useNavigation()
+
+    const [credentialsInvalid, setCredentialsInvalid] = useState({
+        email: false,
+        password: false,
+        confirmEmail: false,
+        confirmPassword: false
+    })
 
     const handleSubmit = (credentails) => {
         
@@ -22,6 +29,12 @@ export default function AuthContent({ isLogin }) {
 
         if(!emailIsValid || !passwordIsValid || (!isLogin && (!emailsAreEqual || passwordAreEqual))) {
             Alert.alert("Hatalı İşlem", "Lütfen girdiğiniz değerleri kontrol ediniz.")
+            setCredentialsInvalid({
+                email: !emailIsValid,
+                password: !passwordIsValid,
+                confirmEmail: !emailIsValid || !emailsAreEqual,
+                confirmPassword: !passwordIsValid || !passwordAreEqual
+            })
             return
         }
     }
@@ -36,7 +49,7 @@ export default function AuthContent({ isLogin }) {
 
   return (
     <View style={styles.container}>
-      <AuthForm isLogin={isLogin} onsubmit={handleSubmit} />
+      <AuthForm isLogin={isLogin} onsubmit={handleSubmit} credentialsInvalid={credentialsInvalid} />
       <View>
         <ButtonWhite onPress={switchScreen}>
             {isLogin ? "Yeni Kullanıcı Oluştur" : "Giriş Yap"}
