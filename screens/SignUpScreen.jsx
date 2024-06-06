@@ -1,5 +1,5 @@
-import { Alert, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import { Alert } from "react-native";
+import { useState } from "react";
 import AuthContent from "../components/AuthContent";
 import { createUser } from "../helpers/auth";
 import Loading from "../components/Loading";
@@ -26,5 +26,3 @@ export default function SignUpScreen() {
 
   return <AuthContent onAuthenticate={handleSignUp} />;
 }
-
-const styles = StyleSheet.create({});

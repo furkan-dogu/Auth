@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from 'react-native'
+import { Alert } from 'react-native'
 import { useState } from 'react'
 import AuthContent from '../components/AuthContent'
 import Loading from "../components/Loading"
@@ -28,5 +28,3 @@ export default function LoginScreen() {
     <AuthContent isLogin onAuthenticate={handleLogin} />
   )
 }
-
-const styles = StyleSheet.create({})

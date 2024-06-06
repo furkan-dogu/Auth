@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
-import AuthContextProvider from "./context/AuthContext";
+import HomeScreen from "./screens/HomeScreen";
+import AuthContextProvider, { useAuthContext }  from "./context/AuthContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,14 +38,43 @@ function NormalStack() {
   );
 }
 
-export default function App() {
+function AfterAuthenticatedStack() {
   return (
-    <AuthContextProvider>
-      <NavigationContainer>
-        <NormalStack />
-      </NavigationContainer>
-    </AuthContextProvider>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "bluviolet",
+        },
+        headerTintColor: "white",
+        contentStyle: {
+          backgroundColor: "white",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitle: "Ana Sayfa",
+        }}
+      />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({});
+function Navigation() {
+  const { isAuthenticated } = useAuthContext()
+  return (
+    <NavigationContainer>
+      {isAuthenticated ? <AfterAuthenticatedStack /> : <NormalStack />}
+    </NavigationContainer>
+  )
+}
+
+export default function App() {
+  return (
+    <AuthContextProvider>
+      <Navigation />
+    </AuthContextProvider>
+  );
+}
